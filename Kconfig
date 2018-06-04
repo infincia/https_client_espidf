@@ -1,0 +1,9 @@
+menu "C++ HTTP/TLS Client"
+
+config USE_ESP_TLS
+    bool "Use TLS library from ESP-IDF 3.1+"
+    default false
+    help
+        Allows use of the C++ class without requiring Mongoose
+
+endmenu

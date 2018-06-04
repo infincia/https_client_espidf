@@ -1,0 +1,22 @@
+{
+    "name": "https_client_espidf",
+    "keywords": "https, tls, c++, esp-idf",
+    "description": "A C++ HTTP/TLS client for ESP32 IDF",
+    "repository":
+    {
+      "type": "git",
+      "url": "https://github.com/infincia/https_client_espidf.git"
+    },
+    "authors":
+    [
+      {
+        "name": "Stephen Oliver",
+        "email": "steve@infincia.com",
+        "url": "https://infincia.com",
+        "maintainer": true
+      }
+    ],
+    "version": "0.1.0",
+    "frameworks": "espidf",
+    "platforms": "espressif32"
+  }
