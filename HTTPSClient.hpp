@@ -36,36 +36,16 @@ class HTTPSClient {
     HTTPSClient(const std::string &user_agent, const char* ca_pem, int timeout = 5000);
     virtual ~HTTPSClient();
 
-    void close();
-
-    bool is_open() const {
-        return _connection_open;
-    }
-
     void set_read_cb(std::function<void (const char*, int)>read_cb) {
         _read_cb = read_cb;
     }
 
-    int read(char* buf, int len);
-    int write(const char* buf, int len);
     std::function<void (const char*, int)> _read_cb;
 
     int exit_flag = 0;
     int status_code = 0;
 
   private:
-
-    bool _connection_open;
-
-
-#if defined(CONFIG_USE_ESP_TLS)
-    esp_http_client_handle_t * _client;
-    char text[_HTTPS_CLIENT_BUFFSIZE];
-#else 
-    struct mg_mgr * _client;
-    mg_connection *_nc;
-#endif
-
     std::string _user_agent;
 
     const char* _ca_pem;
