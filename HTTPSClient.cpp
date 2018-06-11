@@ -103,6 +103,9 @@ HTTPSClient::HTTPSClient(const std::string &user_agent, const char *ca_pem, int 
 }
 
 int HTTPSClient::get(const char *_url) {
+    exit_flag = 0;
+    status_code = 0;
+    
     esp_err_t err = ESP_OK;
 
 #if defined(CONFIG_USE_ESP_TLS)
