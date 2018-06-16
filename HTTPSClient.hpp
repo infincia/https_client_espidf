@@ -13,15 +13,6 @@
 
 #include <functional>
 
-#include <lwip/sockets.h>
-
-#include <lwip/err.h>
-
-#include <lwip/sys.h>
-#include <lwip/netdb.h>
-#include <lwip/dns.h>
-
-
 #if defined(CONFIG_USE_ESP_TLS)
 #include <esp_http_client.h>
 #define _HTTPS_CLIENT_BUFFSIZE 1024
