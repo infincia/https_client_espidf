@@ -23,6 +23,7 @@
 class HTTPSClient {
   public:
     int get(const char* _url);
+    int post(const char* _url, const char* _body);
 
     HTTPSClient(const std::string &user_agent, const char* ca_pem, int timeout = 5000);
     virtual ~HTTPSClient();

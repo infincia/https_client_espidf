@@ -227,6 +227,56 @@ int HTTPSClient::get(const char *_url) {
     return this->status_code;
 }
 
+int HTTPSClient::post(const char* _url, const char* _body) {
+    exit_flag = 0;
+    status_code = 0;
+    
+    esp_err_t err = ESP_OK;
+
+    size_t s = sizeof(struct mg_mgr);
+
+    ESP_LOGD(TAG, "size of _client is %d", s);
+
+    struct mg_mgr _client;
+    memset(&_client, 0, s);
+
+    ESP_LOGD(TAG, "mgr_init");
+
+    mg_mgr_init(&_client, this);
+
+    struct mg_connect_opts http_opts;
+    memset(&http_opts, 0, sizeof(http_opts));
+
+    //http_opts.ssl_ca_cert = this->_ca_pem;
+
+    ESP_LOGD(TAG, "mg_connect_http");
+
+    struct mg_connection *_nc  = mg_connect_http_opt(&_client, ev_handler, this, http_opts, _url, NULL, _body);
+
+    if (_nc == NULL) {
+        ESP_LOGD(TAG, "mg_mgr_free");
+        mg_mgr_free(&_client);
+        throw std::runtime_error("connection failed");
+    }
+
+    if (err == ESP_OK) {
+        ESP_LOGD(TAG, "mg_mgr_poll");
+        while (this->exit_flag == 0) {
+            mg_mgr_poll(&_client, 100);
+        }
+
+        ESP_LOGD(TAG, "mg_mgr_poll finished");
+        
+        ESP_LOGD(TAG, "mg_mgr_free");
+
+        mg_mgr_free(&_client);
+    } else {
+        throw std::runtime_error("connection failed");
+    }
+
+    return this->status_code;
+}
+
 
 HTTPSClient::~HTTPSClient() {
     ESP_LOGD(TAG, "~HTTPSClient(%p)", static_cast<void *>(this));
