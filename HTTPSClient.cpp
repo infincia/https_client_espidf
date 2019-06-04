@@ -5,6 +5,7 @@
 #include "HTTPSClient.hpp"
 
 
+#include <errno.h>
 #include <esp_log.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
@@ -129,6 +130,7 @@ int HTTPSClient::get(const char *_url) {
         HTTP_TRANSPORT_OVER_SSL, /*!< HTTP transport type, see `esp_http_client_transport_t` */
         0, /*!< HTTP buffer size (both send and receive) */
         this,
+        false,
     };
 
     esp_http_client_handle_t _client = esp_http_client_init(&config);
