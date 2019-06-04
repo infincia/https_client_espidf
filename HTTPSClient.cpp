@@ -175,7 +175,7 @@ int HTTPSClient::get(const char *_url) {
         int length = -1;
         this->status_code = esp_http_client_get_status_code(_client);
         length = esp_http_client_get_content_length(_client);  
-        ESP_LOGI(TAG, "Status = %d, content_length = %d", this->status_code, length);
+        ESP_LOGD(TAG, "Status = %d, content_length = %d", this->status_code, length);
     
         char text[_HTTPS_CLIENT_BUFFSIZE];
 
