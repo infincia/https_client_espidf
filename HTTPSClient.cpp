@@ -233,6 +233,10 @@ int HTTPSClient::post(const char* _url, const char* _body) {
     
     esp_err_t err = ESP_OK;
 
+    #if defined(CONFIG_USE_ESP_TLS)
+
+    #else
+
     size_t s = sizeof(struct mg_mgr);
 
     ESP_LOGD(TAG, "size of _client is %d", s);
@@ -273,6 +277,7 @@ int HTTPSClient::post(const char* _url, const char* _body) {
     } else {
         throw std::runtime_error("connection failed");
     }
+    #endif
 
     return this->status_code;
 }
