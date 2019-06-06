@@ -40,6 +40,11 @@ static esp_err_t _http_event_handle(esp_http_client_event_t *evt) {
             break;
         case HTTP_EVENT_ON_DATA:
             ESP_LOGV(TAG, "HTTP_EVENT_ON_DATA, len=%d", evt->data_len);
+            if (!esp_http_client_is_chunked_response(evt->client)) {
+                if (instance->_read_cb) {
+                    instance->_read_cb((char*)evt->data, evt->data_len);
+                }
+            }
             break;
         case HTTP_EVENT_ON_FINISH:
             ESP_LOGV(TAG, "HTTP_EVENT_ON_FINISH");
