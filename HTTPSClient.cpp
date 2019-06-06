@@ -47,6 +47,9 @@ static esp_err_t _http_event_handle(esp_http_client_event_t *evt) {
         case HTTP_EVENT_DISCONNECTED:
             ESP_LOGV(TAG, "HTTP_EVENT_DISCONNECTED");
             break;
+        default:
+            ESP_LOGV(TAG, "UNKNOWN HTTP EVENT: %d", evt->event_id);
+            break;
     }
     return ESP_OK;
 }
