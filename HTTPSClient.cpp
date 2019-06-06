@@ -177,45 +177,11 @@ int HTTPSClient::get(const char *_url) {
 
     if (err == ESP_OK) {
 #if defined(CONFIG_USE_ESP_TLS)
-
-        long start = millis();
-
         int length = -1;
         this->status_code = esp_http_client_get_status_code(_client);
         length = esp_http_client_get_content_length(_client);  
         ESP_LOGD(TAG, "Status = %d, content_length = %d", this->status_code, length);
-    
-        char text[_HTTPS_CLIENT_BUFFSIZE];
-
-        while (true) {
-            int buff_len = esp_http_client_read(_client, text, _HTTPS_CLIENT_BUFFSIZE);
-            if (buff_len < 0) {
-                if (errno == EAGAIN) {
-                    long now = millis();
-                    if (_timeout <= 0 || (now - start) < _timeout) {
-                        continue;
-                    }
-                }
-                ESP_LOGE(TAG, "esp_http_client_read  returned -0x%x", -buff_len);
-                esp_http_client_cleanup(_client);
-                throw std::runtime_error("read from connection failed");
-                
-            } else if (buff_len > 0) {
-                if (this->_read_cb && this->status_code == 200) {
-                    this->_read_cb(text, buff_len);
-                }
-                ESP_LOGV(TAG, "read %d", buff_len);
-            } else if (buff_len == 0) { /*packet over*/
-                ESP_LOGD(TAG, "connection closed");
-                break;
-            } else {
-                ESP_LOGD(TAG, "unexpected recv result");
-                break;
-            }
-        }
-
         esp_http_client_cleanup(_client);
-
 #else
         ESP_LOGD(TAG, "mg_mgr_poll");
         while (this->exit_flag == 0) {
