@@ -22,6 +22,8 @@ static unsigned long IRAM_ATTR millis() {
 }
 
 static esp_err_t _http_event_handle(esp_http_client_event_t *evt) {
+    HTTPSClient * instance = static_cast<HTTPSClient *>(c->mgr->user_data);
+
     switch (evt->event_id) {
         case HTTP_EVENT_ERROR:
             // ESP_LOGI(TAG, "HTTP_EVENT_ERROR");
