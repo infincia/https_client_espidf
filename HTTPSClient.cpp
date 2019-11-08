@@ -128,6 +128,8 @@ int HTTPSClient::get(const char *_url) {
         nullptr, /*!< HTTP query */
         this->_ca_pem, /*!< SSL Certification, PEM format as string, if the client requires to
                          verify server */
+        nullptr,  /*!< SSL client certification, PEM format as string, if the server requires to verify client */
+        nullptr, /*!< SSL client key, PEM format as string, if the server requires to verify client */
         HTTP_METHOD_GET, /*!< HTTP Method */
         this->_timeout, /*!< Network timeout in milliseconds */
         false, /*!< Disable HTTP automatic redirects */
@@ -135,8 +137,9 @@ int HTTPSClient::get(const char *_url) {
         _http_event_handle, /*!< HTTP Event Handle */
         HTTP_TRANSPORT_OVER_SSL, /*!< HTTP transport type, see `esp_http_client_transport_t` */
         0, /*!< HTTP buffer size (both send and receive) */
-        this,
-        false,
+        this,  /*!< HTTP user_data context */
+        false,  /*!< Set asynchronous mode, only supported with HTTPS for now */
+        true /*!< Use a global ca_store for all the connections in which this bool is set. */
     };
 
     esp_http_client_handle_t _client = esp_http_client_init(&config);
